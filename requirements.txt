@@ -5,3 +5,4 @@ pyarrow>=14.0.0
 dash>=2.16.0
 dash-bootstrap-components>=1.5.0
 plotly>=5.20.0
+kaleido>=0.2.1

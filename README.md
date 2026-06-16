@@ -8,6 +8,86 @@ El objetivo es acercar el análisis de fútbol basado en datos a cualquier perso
 
 ---
 
+## Vista previa (sin instalar nada)
+
+No necesitas clonar el repo ni ejecutar Python para ver los resultados principales. Esta sección muestra **tablas**, **capturas estáticas** y un **informe HTML interactivo** (zoom y hover en los gráficos) generados desde los datos de StatsBomb.
+
+### Informe interactivo en el navegador
+
+Abre el informe Plotly standalone (sin servidor local):
+
+**[Ver informe interactivo](https://htmlpreview.github.io/?https://raw.githubusercontent.com/luis20072002/Wrld-Cup-Dashboard/main/docs/report.html)**
+
+> El enlace usa [htmlpreview.github.io](https://htmlpreview.github.io/) para renderizar el HTML versionado en este repo. Si el servicio no responde, las imágenes de abajo siguen disponibles en GitHub.
+
+### Top goleadores — Mundial 2018
+
+| # | Jugador | Selección | Goles | xG | Asist. |
+|---|---------|-----------|------:|---:|-------:|
+| 1 | Harry Kane | Inglaterra | 6 | 1.68 | 0 |
+| 2 | Denis Cheryshev | Rusia | 4 | 1.11 | 0 |
+| 3 | Cristiano Ronaldo | Portugal | 4 | 1.14 | 0 |
+| 4 | Kylian Mbappé | Francia | 4 | 1.78 | 0 |
+| 5 | Romelu Lukaku | Bélgica | 4 | 2.61 | 0 |
+| 6 | Antoine Griezmann | Francia | 4 | 1.21 | 2 |
+| 7 | Artem Dzyuba | Rusia | 3 | 0.87 | 2 |
+| 8 | Edinson Cavani | Uruguay | 3 | 2.15 | 0 |
+| 9 | Diego Costa | España | 3 | 2.30 | 0 |
+| 10 | Yerry Mina | Colombia | 3 | 0.77 | 0 |
+
+### Top goleadores — Mundial 2022
+
+| # | Jugador | Selección | Goles | xG | Asist. |
+|---|---------|-----------|------:|---:|-------:|
+| 1 | Kylian Mbappé | Francia | 8 | 2.67 | 2 |
+| 2 | Lionel Messi | Argentina | 7 | 2.11 | 3 |
+| 3 | Julián Álvarez | Argentina | 4 | 1.91 | 0 |
+| 4 | Olivier Giroud | Francia | 4 | 3.04 | 0 |
+| 5 | Cody Gakpo | Países Bajos | 3 | 0.56 | 0 |
+| 6 | Bukayo Saka | Inglaterra | 3 | 0.58 | 0 |
+| 7 | Álvaro Morata | España | 3 | 1.11 | 1 |
+| 8 | Marcus Rashford | Inglaterra | 3 | 1.38 | 0 |
+| 9 | Richarlison | Brasil | 3 | 1.62 | 0 |
+| 10 | Enner Valencia | Ecuador | 3 | 1.14 | 0 |
+
+*Goles excluyen tandas de penales. xG excluye penaltis en tiempo reglamentario.*
+
+### Galería de gráficos
+
+**Resumen — máximos goleadores (2022)**
+
+![Máximos goleadores Mundial 2022](docs/preview/overview_scorers_2022.png)
+
+**Resumen — goles por selección (2022)**
+
+![Goles por selección Mundial 2022](docs/preview/overview_teams_2022.png)
+
+**Top performers — ranking por score (2022)**
+
+![Top performers por score](docs/preview/performers_ranking_2022.png)
+
+**Top performers — xG vs goles (2022)**
+
+![Scatter xG vs goles](docs/preview/performers_scatter_2022.png)
+
+**Perfil del jugador líder por score (2022)**
+
+![Radar del top performer](docs/preview/player_radar_top_2022.png)
+
+**Comparativa 2018 vs 2022**
+
+![Comparativa de goleadores](docs/preview/comparison_scorers.png)
+
+**Goles por fase del torneo (2022)**
+
+![Goles por fase](docs/preview/overview_stage_2022.png)
+
+> Estas capturas son una instantánea. Para filtrar por edición, métrica o jugador en tiempo real, ejecuta el dashboard Dash (sección [Instalación y ejecución](#instalación-y-ejecución)).
+>
+> Para regenerar las vistas previas tras actualizar datos: `py scripts/export_previews.py`
+
+---
+
 ## Qué puedes explorar
 
 El dashboard tiene cuatro pestañas. Cada una responde a una pregunta distinta sobre el torneo:
@@ -169,7 +249,11 @@ Wrld_Cup_Predict/
 ├── requirements.txt          # Dependencias Python
 ├── run.bat / run.ps1         # Lanzadores rápidos (Windows)
 ├── scripts/
-│   └── build_cache.py        # Descarga StatsBomb y genera Parquet (ejecutar 1 vez)
+│   ├── build_cache.py        # Descarga StatsBomb y genera Parquet (ejecutar 1 vez)
+│   └── export_previews.py    # Genera PNG + HTML para el README público
+├── docs/
+│   ├── report.html           # Informe Plotly interactivo (vista previa)
+│   └── preview/              # Capturas PNG embebidas en el README
 ├── src/
 │   ├── config.py             # IDs de torneo, rutas, pesos del score
 │   ├── data_loader.py        # Lectura del cache + wrapper statsbombpy
@@ -223,6 +307,9 @@ Abre [http://127.0.0.1:8050](http://127.0.0.1:8050) en el navegador.
 
 ## Limitaciones y trabajo futuro
 
+- Las PNG y el HTML del README son una **instantánea**; no reemplazan los filtros dinámicos del dashboard Dash.
+- Tras cambiar métricas o datos, re-ejecuta `py scripts/export_previews.py` y commitea `docs/` de nuevo.
+- El informe interactivo depende de htmlpreview.github.io (servicio externo); las imágenes del README funcionan sin él.
 - **Sin Mundial 2026** hasta que StatsBomb publique la edición en open data.
 - La comparativa es **entre torneos**, no un tracking longitudinal de carrera por jugador.
 - El cálculo de minutos depende de la calidad de eventos de sustitución; en partidos con datos incompletos se usa un fallback conservador.
@@ -230,10 +317,18 @@ Abre [http://127.0.0.1:8050](http://127.0.0.1:8050) en el navegador.
 
 ---
 
-## Créditos y licencia de datos
+## Créditos y licencias
+
+### Código — MIT License
+
+El código fuente de este proyecto está bajo la [MIT License](LICENSE).
+
+Copyright (c) 2026 Luis Eduardo Mendoza Angulo
+
+### Datos — StatsBomb Open Data
 
 - **Datos:** [StatsBomb Open Data](https://github.com/statsbomb/open-data). Al publicar o compartir análisis basados en estos datos, debes citar a **StatsBomb** como fuente y respetar su [user agreement](https://www.statsbomb.com/resource-centre/).
-- **Código del dashboard:** proyecto open source en este repositorio. Las métricas y visualizaciones son derivadas; los datos originales pertenecen a StatsBomb bajo sus términos de uso.
+- Las métricas y visualizaciones son derivadas de eventos StatsBomb; los datos originales permanecen bajo los términos de StatsBomb, independientemente de la licencia MIT del código.
 
 ---
 
